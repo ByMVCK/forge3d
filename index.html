@@ -655,6 +655,138 @@ footer {
 </section>
 
 <!-- CONTACTO -->
+
+<!-- MODAL OVERLAY -->
+<div id="modal-overlay" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(11,13,26,.92); backdrop-filter:blur(8px); overflow-y:auto; padding:40px 20px;">
+  <div style="max-width:680px; margin:0 auto; background:var(--navy3); border:1px solid rgba(230,80,64,.25); position:relative;">
+
+    <!-- Close button -->
+    <button onclick="closeModal()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:var(--dim); font-size:1.4rem; cursor:pointer; line-height:1; transition:color .2s;" onmouseover="this.style.color='var(--forge)'" onmouseout="this.style.color='var(--dim)'">✕</button>
+
+    <!-- Header -->
+    <div style="background:var(--navy2); padding:2.5rem 2.5rem 2rem; border-bottom:1px solid rgba(230,80,64,.15);">
+      <div style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--forge); margin-bottom:.75rem;">// Solicitar presupuesto</div>
+      <div style="font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:2rem; color:var(--white); line-height:1;">CUÉNTANOS TU PROYECTO</div>
+      <div style="font-size:.85rem; color:var(--dim); margin-top:.6rem; font-weight:300;">Respondemos en menos de 24 horas · Sin compromiso</div>
+    </div>
+
+    <!-- Form -->
+    <form id="presupuesto-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" style="padding:2.5rem;" onsubmit="handleSubmit(event)">
+      <input type="hidden" name="access_key" value="a5ba57f3-fbba-45da-a861-44e376fb9189">
+      <input type="hidden" name="subject" value="Nuevo presupuesto FORGE3D">
+      <input type="hidden" name="from_name" value="FORGE3D Web">
+
+      <!-- Nombre + Email -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+        <div>
+          <label style="font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.5rem;">Nombre *</label>
+          <input type="text" name="nombre" required placeholder="Tu nombre"
+            style="width:100%; background:var(--navy2); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:12px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none; transition:border-color .2s;"
+            onfocus="this.style.borderColor='var(--forge)'" onblur="this.style.borderColor='rgba(107,117,153,.3)'">
+        </div>
+        <div>
+          <label style="font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.5rem;">Email *</label>
+          <input type="email" name="email" required placeholder="tu@email.com"
+            style="width:100%; background:var(--navy2); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:12px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none; transition:border-color .2s;"
+            onfocus="this.style.borderColor='var(--forge)'" onblur="this.style.borderColor='rgba(107,117,153,.3)'">
+        </div>
+      </div>
+
+      <!-- Teléfono + Material -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+        <div>
+          <label style="font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.5rem;">Teléfono</label>
+          <input type="tel" name="telefono" placeholder="+34 600 000 000"
+            style="width:100%; background:var(--navy2); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:12px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none; transition:border-color .2s;"
+            onfocus="this.style.borderColor='var(--forge)'" onblur="this.style.borderColor='rgba(107,117,153,.3)'">
+        </div>
+        <div>
+          <label style="font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.5rem;">Material preferido</label>
+          <select name="material"
+            style="width:100%; background:var(--navy2); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:12px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none; transition:border-color .2s; appearance:none;"
+            onfocus="this.style.borderColor='var(--forge)'" onblur="this.style.borderColor='rgba(107,117,153,.3)'">
+            <option value="">No lo sé aún</option>
+            <option value="PLA">PLA — Uso general</option>
+            <option value="PETG">PETG — Resistente a impactos</option>
+            <option value="TPU">TPU — Flexible</option>
+            <option value="ASA">ASA — Exterior / UV</option>
+            <option value="ABS">ABS — Alta resistencia</option>
+            <option value="Especial">Especial (madera, metálico…)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Cantidad + Urgencia -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+        <div>
+          <label style="font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.5rem;">Cantidad de piezas</label>
+          <input type="number" name="cantidad" placeholder="1" min="1"
+            style="width:100%; background:var(--navy2); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:12px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none; transition:border-color .2s;"
+            onfocus="this.style.borderColor='var(--forge)'" onblur="this.style.borderColor='rgba(107,117,153,.3)'">
+        </div>
+        <div>
+          <label style="font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.5rem;">Urgencia</label>
+          <select name="urgencia"
+            style="width:100%; background:var(--navy2); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:12px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none; transition:border-color .2s; appearance:none;"
+            onfocus="this.style.borderColor='var(--forge)'" onblur="this.style.borderColor='rgba(107,117,153,.3)'">
+            <option value="Normal">Normal (5–7 días)</option>
+            <option value="Express 48h">Express 48h</option>
+            <option value="Express 24h">Express 24h</option>
+            <option value="Sin prisa">Sin prisa</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div style="margin-bottom:1rem;">
+        <label style="font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.5rem;">Descripción del proyecto *</label>
+        <textarea name="descripcion" required rows="4" placeholder="Cuéntanos qué necesitas: dimensiones aproximadas, uso de la pieza, acabado deseado, referencias…"
+          style="width:100%; background:var(--navy2); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:12px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none; resize:vertical; transition:border-color .2s;"
+          onfocus="this.style.borderColor='var(--forge)'" onblur="this.style.borderColor='rgba(107,117,153,.3)'"></textarea>
+      </div>
+
+      <!-- Archivo -->
+      <div style="margin-bottom:2rem;">
+        <label style="font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.5rem;">Archivo (STL, imagen, PDF…)</label>
+        <div id="drop-zone"
+          style="border:1px dashed rgba(230,80,64,.35); padding:2rem; text-align:center; cursor:pointer; transition:border-color .2s, background .2s;"
+          onclick="document.getElementById('archivo').click()"
+          ondragover="event.preventDefault(); this.style.borderColor='var(--forge)'; this.style.background='rgba(230,80,64,.05)'"
+          ondragleave="this.style.borderColor='rgba(230,80,64,.35)'; this.style.background='none'"
+          ondrop="handleDrop(event)">
+          <div style="font-size:1.8rem; margin-bottom:.5rem;">📎</div>
+          <div id="drop-label" style="font-family:'DM Mono',monospace; font-size:.75rem; color:var(--dim); letter-spacing:.08em;">
+            Arrastra tu archivo aquí o <span style="color:var(--forge)">haz clic para seleccionar</span>
+          </div>
+          <div style="font-family:'DM Mono',monospace; font-size:.65rem; color:var(--dim); margin-top:.4rem; opacity:.6;">STL · OBJ · PNG · JPG · PDF · máx. 10MB</div>
+          <input type="file" id="archivo" name="archivo" accept=".stl,.obj,.png,.jpg,.jpeg,.pdf" style="display:none" onchange="updateFileName(this)">
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" id="submit-btn"
+        style="width:100%; background:var(--forge); color:var(--white); border:none; padding:16px; font-family:'DM Mono',monospace; font-size:.82rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; transition:background .2s; display:flex; align-items:center; justify-content:center; gap:10px;">
+        → Enviar solicitud de presupuesto
+      </button>
+
+      <div style="font-family:'DM Mono',monospace; font-size:.65rem; color:var(--dim); text-align:center; margin-top:1rem; opacity:.7;">
+        Respondemos en menos de 24h · Tus datos no se comparten con terceros
+      </div>
+
+    </form>
+
+    <!-- Success message (hidden) -->
+    <div id="success-msg" style="display:none; padding:3rem 2.5rem; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:1rem;">✅</div>
+      <div style="font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:1.8rem; color:var(--white); margin-bottom:.75rem;">¡Solicitud enviada!</div>
+      <div style="font-size:.95rem; color:var(--dim); margin-bottom:2rem;">Te responderemos en menos de 24 horas con tu presupuesto.</div>
+      <button onclick="closeModal()" style="background:var(--forge); color:var(--white); border:none; padding:12px 32px; font-family:'DM Mono',monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;">Cerrar</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONTACTO -->
 <section id="contacto">
   <div class="sec-label" style="justify-content:center">Contacto</div>
   <h2 class="contact-title reveal">HABLEMOS<br>DE TU <em>PROYECTO</em></h2>
@@ -664,7 +796,9 @@ footer {
     <a href="https://wa.me/34600000000" class="chip">💬 WhatsApp</a>
     <a href="#" class="chip">📍 Telde, Las Palmas</a>
   </div>
-  <a href="mailto:info@forge3d.es" class="btn-primary reveal" style="display:inline-flex">→ Solicitar presupuesto gratis</a>
+  <button onclick="openModal()" class="btn-primary reveal" style="display:inline-flex; border:none; cursor:pointer;">
+    → Solicitar presupuesto gratis
+  </button>
 </section>
 
 <!-- FOOTER -->
@@ -686,14 +820,13 @@ footer {
     mx=e.clientX; my=e.clientY;
     cur.style.left=mx+'px'; cur.style.top=my+'px';
   });
-
   (function animRing(){
     rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
     ring.style.left=rx+'px'; ring.style.top=ry+'px';
     requestAnimationFrame(animRing);
   })();
 
-  document.querySelectorAll('a').forEach(el => {
+  document.querySelectorAll('a, button').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cur.style.width='18px'; cur.style.height='18px'; cur.style.background='var(--ember)';
       ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='var(--ember)';
@@ -720,6 +853,84 @@ footer {
       a.style.color = a.getAttribute('href')==='#'+current ? 'var(--forge)' : '';
     });
   });
+
+  // Modal
+  function openModal() {
+    document.getElementById('modal-overlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+    document.getElementById('presupuesto-form').style.display = 'block';
+    document.getElementById('success-msg').style.display = 'none';
+    document.getElementById('presupuesto-form').reset();
+    document.getElementById('drop-label').innerHTML = 'Arrastra tu archivo aquí o <span style="color:var(--forge)">haz clic para seleccionar</span>';
+  }
+
+  // Close on overlay click
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if(e.target === this) closeModal();
+  });
+
+  // Close on ESC
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+  // File name display
+  function updateFileName(input) {
+    if(input.files[0]) {
+      document.getElementById('drop-label').innerHTML =
+        '📎 <span style="color:var(--light)">' + input.files[0].name + '</span>';
+      document.getElementById('drop-zone').style.borderColor = 'var(--forge)';
+    }
+  }
+
+  // Drag & drop
+  function handleDrop(e) {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if(file) {
+      const input = document.getElementById('archivo');
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+      document.getElementById('drop-label').innerHTML =
+        '📎 <span style="color:var(--light)">' + file.name + '</span>';
+      document.getElementById('drop-zone').style.borderColor = 'var(--forge)';
+      document.getElementById('drop-zone').style.background = 'none';
+    }
+  }
+
+  // Form submit
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Enviando…';
+    btn.style.background = 'var(--navy3)';
+    btn.disabled = true;
+
+    const formData = new FormData(e.target);
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+      if(res.ok) {
+        document.getElementById('presupuesto-form').style.display = 'none';
+        document.getElementById('success-msg').style.display = 'block';
+      } else {
+        btn.textContent = '✕ Error al enviar. Inténtalo de nuevo.';
+        btn.style.background = '#8B0000';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = '✕ Error de conexión. Inténtalo de nuevo.';
+      btn.style.background = '#8B0000';
+      btn.disabled = false;
+    }
+  }
 </script>
 </body>
 </html>
