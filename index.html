@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORGE3D – Impresión 3D FDM · Canary Islands</title>
+<meta name="description" content="Impresión 3D FDM profesional en Canarias. Piezas funcionales, prototipos y diseño personalizado en filamento. Telde, Las Palmas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #0b0d1a;
+  --navy2:  #0f1123;
+  --navy3:  #161a2e;
+  --panel:  #1e2340;
+  --forge:  #e65040;
+  --ember:  #ff8c50;
+  --light:  #dce1f0;
+  --dim:    #6b7599;
+  --white:  #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--light);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--forge);
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .15s, height .15s, background .2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 34px; height: 34px;
+  border: 1px solid var(--forge);
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  opacity: .45;
+}
+
+.grid-bg {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(230,80,64,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230,80,64,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--forge); }
+
+.top-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--forge), var(--ember), var(--forge));
+  z-index: 200;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 62px; padding: 0 5vw;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(11,13,26,.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(230,80,64,.12);
+}
+.nav-logo {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 1.55rem; letter-spacing: .05em;
+  color: var(--white); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo span { color: var(--forge); }
+.nav-logo svg { width: 26px; height: 26px; }
+.nav-links {
+  display: flex; gap: 2rem; list-style: none;
+  font-family: 'DM Mono', monospace; font-size: .76rem;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.nav-links a {
+  color: var(--dim); text-decoration: none; transition: color .2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 1px; background: var(--forge);
+  transform: scaleX(0); transition: transform .25s;
+}
+.nav-links a:hover { color: var(--light); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-cta {
+  font-family: 'DM Mono', monospace; font-size: .73rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--forge); border: 1px solid var(--forge);
+  padding: 8px 20px; text-decoration: none;
+  transition: background .2s, color .2s;
+}
+.nav-cta:hover { background: var(--forge); color: var(--white); }
+
+/* HERO */
+.hero {
+  position: relative; z-index: 2;
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 5vw 80px; overflow: hidden;
+}
+.eyebrow {
+  font-family: 'DM Mono', monospace; font-size: .73rem;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--forge); margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 12px;
+  opacity: 0; animation: fadeUp .8s .2s forwards;
+}
+.eyebrow::before { content: ''; width: 36px; height: 1px; background: var(--forge); }
+.hero-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 11vw, 10.5rem);
+  line-height: .9; letter-spacing: -.01em; color: var(--white);
+  opacity: 0; animation: fadeUp .8s .35s forwards;
+}
+.hero-title em { font-style: normal; -webkit-text-stroke: 2px var(--forge); color: transparent; }
+.hero-sub {
+  font-size: clamp(.95rem, 1.8vw, 1.2rem);
+  color: var(--dim); max-width: 500px; font-weight: 300;
+  margin: 1.5rem 0 2.5rem;
+  opacity: 0; animation: fadeUp .8s .5s forwards;
+}
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .8s .65s forwards;
+}
+.btn-primary {
+  font-family: 'DM Mono', monospace; font-size: .78rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  background: var(--forge); color: var(--white);
+  padding: 14px 36px; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: background .2s, transform .15s;
+}
+.btn-primary:hover { background: var(--ember); transform: translateY(-2px); }
+.btn-ghost {
+  font-family: 'DM Mono', monospace; font-size: .78rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--light); padding: 14px 36px; text-decoration: none;
+  border: 1px solid rgba(220,225,240,.2);
+  transition: border-color .2s, color .2s;
+}
+.btn-ghost:hover { border-color: var(--light); color: var(--white); }
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 5rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .8s .85s forwards;
+}
+.stat { border-left: 2px solid var(--forge); padding-left: 1rem; }
+.stat-num {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 2rem; color: var(--white); line-height: 1;
+}
+.stat-lbl {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--dim); margin-top: 4px;
+}
+.hero-deco {
+  position: absolute; right: 4vw; top: 50%;
+  transform: translateY(-50%);
+  width: clamp(260px, 32vw, 500px);
+  opacity: 0; animation: fadeIn 1.2s .8s forwards;
+  pointer-events: none;
+}
+
+/* SECTIONS */
+section { position: relative; z-index: 2; padding: 100px 5vw; }
+.sec-label {
+  font-family: 'DM Mono', monospace; font-size: .7rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--forge); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.sec-label::before { content: '//'; color: var(--dim); }
+.sec-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: clamp(2.4rem, 5vw, 3.8rem);
+  line-height: 1; color: var(--white); margin-bottom: 1.5rem;
+}
+
+/* SERVICES */
+#servicios { background: var(--navy2); }
+.services-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px; margin-top: 4rem; border: 1px solid rgba(230,80,64,.12);
+}
+.scard {
+  background: var(--navy3); padding: 2.5rem;
+  position: relative; overflow: hidden; transition: background .3s;
+}
+.scard::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--forge), var(--ember));
+  transform: scaleX(0); transform-origin: left; transition: transform .4s;
+}
+.scard:hover { background: var(--panel); }
+.scard:hover::before { transform: scaleX(1); }
+.scard-num {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  letter-spacing: .15em; color: var(--forge); opacity: .6; margin-bottom: 1.5rem;
+}
+.scard-icon { font-size: 1.9rem; display: block; margin-bottom: .9rem; }
+.scard-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700; font-size: 1.45rem; color: var(--white); margin-bottom: .7rem;
+}
+.scard-desc { font-size: .88rem; color: var(--dim); line-height: 1.75; font-weight: 300; }
+.scard-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1.4rem; }
+.tag {
+  font-family: 'DM Mono', monospace; font-size: .63rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); border: 1px solid rgba(107,117,153,.28);
+  padding: 3px 10px; transition: color .2s, border-color .2s;
+}
+.scard:hover .tag { color: var(--ember); border-color: rgba(255,140,80,.28); }
+
+/* MATERIALS */
+#materiales { background: var(--navy); }
+.mat-intro {
+  max-width: 520px; font-size: 1rem; color: var(--dim);
+  font-weight: 300; line-height: 1.8; margin-bottom: 3.5rem;
+}
+.mat-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1px; border: 1px solid rgba(230,80,64,.08);
+}
+.mcard { background: var(--navy2); padding: 2rem 1.75rem; transition: background .25s; }
+.mcard:hover { background: var(--panel); }
+.mdot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-bottom: 1.2rem; }
+.mname {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700; font-size: 1.3rem; color: var(--white); margin-bottom: .4rem;
+}
+.mdesc { font-size: .82rem; color: var(--dim); line-height: 1.65; }
+.mprops { margin-top: 1.2rem; display: flex; flex-direction: column; gap: 5px; }
+.mprop {
+  font-family: 'DM Mono', monospace; font-size: .64rem;
+  letter-spacing: .07em; color: var(--dim);
+  display: flex; align-items: center; gap: 6px;
+}
+.mprop::before { content: '→'; color: var(--forge); }
+
+/* PROCESS */
+#proceso { background: var(--navy2); }
+.steps {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 4rem; position: relative;
+}
+.steps::before {
+  content: ''; position: absolute; top: 40px; left: 5%; right: 5%;
+  height: 1px; background: rgba(230,80,64,.2); z-index: 0;
+}
+.step { padding: 0 2rem 2rem; position: relative; z-index: 1; text-align: center; }
+.step-n {
+  width: 54px; height: 54px; border: 2px solid var(--forge);
+  background: var(--navy2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 1.45rem; color: var(--forge);
+  margin: 0 auto 1.5rem; transition: background .25s, color .25s;
+}
+.step:hover .step-n { background: var(--forge); color: var(--white); }
+.step-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700; font-size: 1.12rem; color: var(--white); margin-bottom: .5rem;
+}
+.step-desc { font-size: .84rem; color: var(--dim); line-height: 1.7; }
+
+/* WHY */
+#nosotros {
+  background: var(--navy);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5vw; align-items: center;
+}
+.why-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.why-item { display: grid; grid-template-columns: 48px 1fr; gap: 1rem; align-items: start; }
+.why-icon {
+  width: 48px; height: 48px; flex-shrink: 0;
+  border: 1px solid rgba(230,80,64,.28);
+  display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+  transition: border-color .25s, background .25s;
+}
+.why-item:hover .why-icon { border-color: var(--forge); background: rgba(230,80,64,.08); }
+.why-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700; font-size: 1.05rem; color: var(--white); margin-bottom: .25rem;
+}
+.why-desc { font-size: .84rem; color: var(--dim); line-height: 1.65; }
+.why-visual { display: flex; align-items: center; justify-content: center; min-height: 380px; }
+.hex-grid { display: grid; grid-template-columns: repeat(4, 76px); gap: 5px; transform: rotate(-15deg); }
+.hcell {
+  width: 76px; height: 76px;
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: .58rem;
+  animation: hpulse 3s infinite;
+}
+.hcell:nth-child(2n) { animation-delay: .6s; }
+.hcell:nth-child(3n) { animation-delay: 1.1s; }
+@keyframes hpulse { 0%,100%{opacity:.25} 50%{opacity:.85} }
+
+/* CONTACT */
+#contacto { background: var(--navy2); text-align: center; padding: 120px 5vw; }
+.contact-title {
+  font-family: 'Big Shoulders Display', sans-serif; font-weight: 900;
+  font-size: clamp(2.8rem, 8vw, 6.5rem); line-height: .9;
+  color: var(--white); margin-bottom: 1.5rem;
+}
+.contact-title em { font-style: normal; -webkit-text-stroke: 2px var(--forge); color: transparent; }
+.contact-sub {
+  font-size: 1rem; color: var(--dim); max-width: 460px;
+  margin: 0 auto 3rem; font-weight: 300;
+}
+.chips { display: flex; gap: 2px; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+.chip {
+  font-family: 'DM Mono', monospace; font-size: .76rem; letter-spacing: .09em;
+  background: var(--panel); color: var(--light);
+  padding: 13px 22px; text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: background .2s, color .2s;
+}
+.chip:hover { background: var(--forge); color: var(--white); }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 2; background: var(--navy);
+  border-top: 1px solid rgba(230,80,64,.12);
+  padding: 2.5rem 5vw;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 1.25rem; color: var(--white);
+}
+.footer-logo span { color: var(--forge); }
+.footer-info {
+  font-family: 'DM Mono', monospace; font-size: .66rem;
+  letter-spacing: .09em; color: var(--dim); text-align: center;
+}
+.footer-copy { font-family: 'DM Mono', monospace; font-size: .66rem; color: var(--dim); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s, transform .7s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+@media (max-width: 768px) { #nosotros { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .hero-deco { display: none; }
+  .steps::before { display: none; }
+  .hero-stats { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+<div class="grid-bg"></div>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <polygon points="16,2 28,9 28,23 16,30 4,23 4,9" stroke="#e65040" stroke-width="1.5" fill="rgba(230,80,64,.1)"/>
+      <polygon points="16,8 23,12 23,20 16,24 9,20 9,12" stroke="#ff8c50" stroke-width="1" fill="none" opacity=".5"/>
+      <polygon points="16,12 20,14.5 20,19.5 16,22 12,19.5 12,14.5" fill="#e65040"/>
+    </svg>
+    FORGE<span>3D</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#materiales">Materiales</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Pedir presupuesto</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Canary Islands · Est. 2026 · FDM</div>
+  <h1 class="hero-title">
+    IMPRESIÓN<br><em>3D</em><br>PROFESIONAL
+  </h1>
+  <p class="hero-sub">
+    Fabricamos tus ideas en filamento de alta calidad. Piezas funcionales, prototipos y diseños únicos desde Telde, Canarias.
+  </p>
+  <div class="hero-actions">
+    <a href="#contacto" class="btn-primary">→ Pide tu presupuesto</a>
+    <a href="#servicios" class="btn-ghost">Ver servicios</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">FDM</div>
+      <div class="stat-lbl">PLA · PETG · TPU · ASA · ABS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Multi</div>
+      <div class="stat-lbl">Material · Bambu Lab AMS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">48h</div>
+      <div class="stat-lbl">Entrega express disponible</div>
+    </div>
+  </div>
+  <svg class="hero-deco" viewBox="0 0 500 500" fill="none">
+    <polygon points="250,18 462,134 462,366 250,482 38,366 38,134" stroke="rgba(230,80,64,.22)" stroke-width="1" fill="none"/>
+    <polygon points="250,56 424,160 424,340 250,444 76,340 76,160" stroke="rgba(230,80,64,.13)" stroke-width="1" fill="none"/>
+    <polygon points="250,94 386,186 386,314 250,406 114,314 114,186" stroke="rgba(255,140,80,.1)" stroke-width="1" fill="none"/>
+    <polygon points="250,136 350,192 350,308 250,364 150,308 150,192" stroke="rgba(230,80,64,.18)" stroke-width="2" fill="rgba(230,80,64,.03)"/>
+    <polygon points="250,184 296,210 296,290 250,316 204,290 204,210" fill="rgba(230,80,64,.13)" stroke="#e65040" stroke-width="1.5"/>
+    <circle cx="250" cy="18"  r="3" fill="#e65040"/>
+    <circle cx="462" cy="134" r="3" fill="#e65040"/>
+    <circle cx="462" cy="366" r="3" fill="#ff8c50"/>
+    <circle cx="250" cy="482" r="3" fill="#e65040"/>
+    <circle cx="38"  cy="366" r="3" fill="#ff8c50"/>
+    <circle cx="38"  cy="134" r="3" fill="#e65040"/>
+    <circle cx="250" cy="250" r="28" fill="rgba(230,80,64,.07)"/>
+    <circle cx="250" cy="250" r="55" fill="rgba(230,80,64,.03)"/>
+    <text x="218" y="257" font-family="'DM Mono',monospace" font-size="11" fill="rgba(230,80,64,.65)" letter-spacing="3">FORGE3D</text>
+  </svg>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="sec-label">Servicios</div>
+  <h2 class="sec-title reveal">Lo que hacemos</h2>
+  <div class="services-grid">
+    <div class="scard reveal">
+      <div class="scard-num">01</div>
+      <span class="scard-icon">🖨️</span>
+      <div class="scard-name">Impresión FDM</div>
+      <p class="scard-desc">Piezas funcionales en filamento termoplástico. Ideal para prototipos, recambios y elementos con buena resistencia mecánica.</p>
+      <div class="scard-tags">
+        <span class="tag">PLA</span><span class="tag">PETG</span><span class="tag">ABS</span>
+        <span class="tag">TPU</span><span class="tag">ASA</span><span class="tag">Wood</span>
+      </div>
+    </div>
+    <div class="scard reveal">
+      <div class="scard-num">02</div>
+      <span class="scard-icon">✏️</span>
+      <div class="scard-name">Diseño 3D</div>
+      <p class="scard-desc">¿Tienes una idea pero no el archivo? Te ayudamos a modelar desde cero o adaptar diseños existentes para que sean imprimibles.</p>
+      <div class="scard-tags">
+        <span class="tag">Modelado</span><span class="tag">Adaptación</span><span class="tag">STL a medida</span>
+      </div>
+    </div>
+    <div class="scard reveal">
+      <div class="scard-num">03</div>
+      <span class="scard-icon">🎨</span>
+      <div class="scard-name">Post-proceso y acabados</div>
+      <p class="scard-desc">Lijado, imprimación, pintura y ensamblaje profesional. Tus piezas llegan listas para usar o para exhibir.</p>
+      <div class="scard-tags">
+        <span class="tag">Lijado</span><span class="tag">Pintura</span>
+        <span class="tag">Epoxi</span><span class="tag">Ensamblaje</span>
+      </div>
+    </div>
+    <div class="scard reveal">
+      <div class="scard-num">04</div>
+      <span class="scard-icon">📦</span>
+      <div class="scard-name">Pedidos en serie</div>
+      <p class="scard-desc">¿Necesitas múltiples unidades? Trabajamos tiradas pequeñas y medianas con precio por volumen. Ideal para tiendas y eventos.</p>
+      <div class="scard-tags">
+        <span class="tag">Series cortas</span><span class="tag">Lotes</span><span class="tag">Precio volumen</span>
+      </div>
+    </div>
+    <div class="scard reveal">
+      <div class="scard-num">05</div>
+      <span class="scard-icon">🚀</span>
+      <div class="scard-name">Entrega express</div>
+      <p class="scard-desc">Servicio prioritario en 24–48 horas para pedidos urgentes dentro de Canarias. Recogida en Telde o envío a domicilio.</p>
+      <div class="scard-tags">
+        <span class="tag">24h</span><span class="tag">48h</span><span class="tag">Canarias</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALES -->
+<section id="materiales">
+  <div class="sec-label">Materiales</div>
+  <h2 class="sec-title reveal">El material correcto<br>para cada proyecto</h2>
+  <p class="mat-intro reveal">Trabajamos con un catálogo seleccionado de filamentos FDM. Cada material tiene sus fortalezas — te asesoramos sobre cuál usar.</p>
+  <div class="mat-grid">
+    <div class="mcard reveal">
+      <span class="mdot" style="background:#4fc3f7"></span>
+      <div class="mname">PLA</div>
+      <div class="mdesc">El más versátil. Fácil de imprimir, acabado excelente y gran variedad de colores.</div>
+      <div class="mprops">
+        <span class="mprop">Prototipos y decoración</span>
+        <span class="mprop">Buena rigidez</span>
+        <span class="mprop">Gran variedad de colores</span>
+      </div>
+    </div>
+    <div class="mcard reveal">
+      <span class="mdot" style="background:#81c784"></span>
+      <div class="mname">PETG</div>
+      <div class="mdesc">Resistente a impactos y humedad. El equilibrio perfecto entre facilidad y prestaciones.</div>
+      <div class="mprops">
+        <span class="mprop">Piezas funcionales</span>
+        <span class="mprop">Resistente a golpes</span>
+        <span class="mprop">Semi-flexible</span>
+      </div>
+    </div>
+    <div class="mcard reveal">
+      <span class="mdot" style="background:#ffb74d"></span>
+      <div class="mname">TPU</div>
+      <div class="mdesc">Filamento flexible y elástico. Para piezas que necesitan doblar sin romperse.</div>
+      <div class="mprops">
+        <span class="mprop">100% flexible</span>
+        <span class="mprop">Resistente al desgaste</span>
+        <span class="mprop">Antideslizante</span>
+      </div>
+    </div>
+    <div class="mcard reveal">
+      <span class="mdot" style="background:#f06292"></span>
+      <div class="mname">ASA</div>
+      <div class="mdesc">Diseñado para exterior. Resistente a UV, lluvia y temperatura extrema.</div>
+      <div class="mprops">
+        <span class="mprop">Resistencia UV</span>
+        <span class="mprop">Uso exterior</span>
+        <span class="mprop">Alta temperatura</span>
+      </div>
+    </div>
+    <div class="mcard reveal">
+      <span class="mdot" style="background:#ce93d8"></span>
+      <div class="mname">ABS</div>
+      <div class="mdesc">Clásico industrial. Alta resistencia mecánica y térmica para piezas exigentes.</div>
+      <div class="mprops">
+        <span class="mprop">Alta resistencia</span>
+        <span class="mprop">Mecanizable</span>
+        <span class="mprop">Alta temperatura</span>
+      </div>
+    </div>
+    <div class="mcard reveal">
+      <span class="mdot" style="background:#a5d6a7"></span>
+      <div class="mname">Especiales</div>
+      <div class="mdesc">PLA Madera, PLA Metálico, PLA Seda y acabados únicos para proyectos creativos.</div>
+      <div class="mprops">
+        <span class="mprop">Acabados únicos</span>
+        <span class="mprop">Proyectos creativos</span>
+        <span class="mprop">Alta calidad visual</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <div class="sec-label">Proceso</div>
+  <h2 class="sec-title reveal">Cómo trabajamos</h2>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-n">01</div>
+      <div class="step-title">Cuéntanos tu proyecto</div>
+      <p class="step-desc">Escríbenos por email o WhatsApp con tu idea, medidas o archivo STL. Cuanta más información, mejor presupuesto.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-n">02</div>
+      <div class="step-title">Presupuesto en 24h</div>
+      <p class="step-desc">Te enviamos un presupuesto detallado con material, tiempo y precio final. Sin sorpresas.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-n">03</div>
+      <div class="step-title">Fabricación</div>
+      <p class="step-desc">Una vez confirmado, ponemos tus piezas en impresión y te avisamos cuando estén listas con fotos.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-n">04</div>
+      <div class="step-title">Entrega</div>
+      <p class="step-desc">Recogida en mano en Telde (Las Palmas) o envío a toda Canarias. Península bajo consulta.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div>
+    <div class="sec-label">¿Por qué FORGE3D?</div>
+    <h2 class="sec-title reveal">Artesanía digital<br>con alma local</h2>
+    <div class="why-list">
+      <div class="why-item reveal">
+        <div class="why-icon">⚡</div>
+        <div>
+          <div class="why-title">Rapidez real</div>
+          <p class="why-desc">Producción propia en Telde. Sin intermediarios, sin esperas de semanas.</p>
+        </div>
+      </div>
+      <div class="why-item reveal">
+        <div class="why-icon">🖨️</div>
+        <div>
+          <div class="why-title">Maquinaria premium</div>
+          <p class="why-desc">Trabajamos con Bambu Lab P1S y A1 Mini. Las mejores impresoras FDM del mercado actual.</p>
+        </div>
+      </div>
+      <div class="why-item reveal">
+        <div class="why-icon">💬</div>
+        <div>
+          <div class="why-title">Trato directo</div>
+          <p class="why-desc">Hablas con quien fabrica tu pieza, no con un formulario. Te asesoramos de verdad.</p>
+        </div>
+      </div>
+      <div class="why-item reveal">
+        <div class="why-icon">📍</div>
+        <div>
+          <div class="why-title">Hecho en Canarias</div>
+          <p class="why-desc">Negocio local con factura IGIC 7%. Sin aduanas ni gastos de importación.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="why-visual reveal">
+    <div class="hex-grid">
+      <div class="hcell" style="background:rgba(79,195,247,.12);color:#4fc3f7">PLA</div>
+      <div class="hcell" style="background:rgba(230,80,64,.2);color:#e65040">FDM</div>
+      <div class="hcell" style="background:rgba(129,199,132,.12);color:#81c784">PETG</div>
+      <div class="hcell" style="background:rgba(255,183,77,.12);color:#ffb74d">TPU</div>
+      <div class="hcell" style="background:rgba(255,140,80,.15);color:#ff8c50">3D</div>
+      <div class="hcell" style="background:rgba(206,147,216,.12);color:#ce93d8">ABS</div>
+      <div class="hcell" style="background:rgba(165,214,167,.1);color:#a5d6a7">WOOD</div>
+      <div class="hcell" style="background:rgba(230,80,64,.25);color:#fff">FORGE</div>
+      <div class="hcell" style="background:rgba(240,98,146,.12);color:#f06292">ASA</div>
+      <div class="hcell" style="background:rgba(79,195,247,.08);color:#4fc3f7">CAD</div>
+      <div class="hcell" style="background:rgba(255,140,80,.08);color:#ff8c50">STL</div>
+      <div class="hcell" style="background:rgba(107,117,153,.15);color:#aab">NYLON</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="sec-label" style="justify-content:center">Contacto</div>
+  <h2 class="contact-title reveal">HABLEMOS<br>DE TU <em>PROYECTO</em></h2>
+  <p class="contact-sub reveal">Cuéntanos qué necesitas. Respondemos en menos de 24 horas con un presupuesto sin compromiso.</p>
+  <div class="chips reveal">
+    <a href="mailto:info@forge3d.es" class="chip">✉️ info@forge3d.es</a>
+    <a href="https://wa.me/34600000000" class="chip">💬 WhatsApp</a>
+    <a href="#" class="chip">📍 Telde, Las Palmas</a>
+  </div>
+  <a href="mailto:info@forge3d.es" class="btn-primary reveal" style="display:inline-flex">→ Solicitar presupuesto gratis</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">FORGE<span>3D</span></div>
+  <div class="footer-info">
+    Telde · Las Palmas de Gran Canaria · Islas Canarias<br>
+    info@forge3d.es · forge3d.es
+  </div>
+  <div class="footer-copy">© 2026 FORGE3D</div>
+</footer>
+
+<script>
+  const cur  = document.getElementById('cur');
+  const ring = document.getElementById('ring');
+  let mx=0,my=0,rx=0,ry=0;
+
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+  });
+
+  (function animRing(){
+    rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  document.querySelectorAll('a').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cur.style.width='18px'; cur.style.height='18px'; cur.style.background='var(--ember)';
+      ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='var(--ember)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cur.style.width='10px'; cur.style.height='10px'; cur.style.background='var(--forge)';
+      ring.style.width='34px'; ring.style.height='34px'; ring.style.borderColor='var(--forge)';
+    });
+  });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => {
+      if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'), i*80);
+    });
+  }, {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current='';
+    sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-100) current=s.id; });
+    navLinks.forEach(a=>{
+      a.style.color = a.getAttribute('href')==='#'+current ? 'var(--forge)' : '';
+    });
+  });
+</script>
+</body>
+</html>
