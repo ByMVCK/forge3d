@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FORGE3D – Impresión 3D FDM · Canary Islands</title>
-<meta name="description" content="Impresión 3D FDM profesional en Canarias. Piezas funcionales, prototipos y diseño personalizado en filamento. Telde, Las Palmas.">
+<meta name="description" content="Impresión 3D FDM profesional en Canarias. Piezas funcionales, prototipos y diseño personalizado en filamento. Islas Canarias.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -380,6 +380,14 @@ footer {
 <body>
 
 <div class="top-bar"></div>
+
+<!-- BANNER OFERTA -->
+<div id="oferta-banner" style="background:linear-gradient(90deg,var(--forge),var(--ember)); padding:10px 5vw; display:flex; align-items:center; justify-content:center; gap:1.5rem; flex-wrap:wrap; position:relative; z-index:99; margin-top:65px;">
+  <span style="font-family:'DM Mono',monospace; font-size:.78rem; letter-spacing:.1em; color:var(--white); text-transform:uppercase;">
+    🎉 <strong>10% de descuento</strong> en tu primer pedido — usa el código <strong>FORGE10</strong> en el formulario
+  </span>
+  <button onclick="document.getElementById('oferta-banner').style.display='none'" style="background:rgba(255,255,255,.2); border:none; color:var(--white); font-size:.8rem; padding:4px 10px; cursor:pointer; font-family:'DM Mono',monospace; letter-spacing:.08em;">✕ cerrar</button>
+</div>
 <div class="grid-bg"></div>
 <div class="cursor" id="cur"></div>
 <div class="cursor-ring" id="ring"></div>
@@ -399,6 +407,9 @@ footer {
     <li><a href="#materiales">Materiales</a></li>
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#casos">Casos</a></li>
+    <li><a href="#calculadora">Precio</a></li>
+    <li><a href="#faq">FAQ</a></li>
   </ul>
   <a href="#contacto" class="nav-cta">Pedir presupuesto</a>
 </nav>
@@ -410,7 +421,7 @@ footer {
     IMPRESIÓN<br><em>3D</em><br>PROFESIONAL
   </h1>
   <p class="hero-sub">
-    Fabricamos tus ideas en filamento de alta calidad. Piezas funcionales, prototipos y diseños únicos desde Telde, Canarias.
+    Fabricamos tus ideas en filamento de alta calidad. Piezas funcionales, prototipos y diseños únicos desde Canarias.
   </p>
   <div class="hero-actions">
     <a href="#contacto" class="btn-primary">→ Pide tu presupuesto</a>
@@ -580,7 +591,7 @@ footer {
     <div class="step reveal">
       <div class="step-n">01</div>
       <div class="step-title">Cuéntanos tu proyecto</div>
-      <p class="step-desc">Escríbenos por email o WhatsApp con tu idea, medidas o archivo STL. Cuanta más información, mejor presupuesto.</p>
+      <p class="step-desc">Escríbenos por email con tu idea, medidas o archivo STL. Cuanta más información, mejor presupuesto.</p>
     </div>
     <div class="step reveal">
       <div class="step-n">02</div>
@@ -595,7 +606,7 @@ footer {
     <div class="step reveal">
       <div class="step-n">04</div>
       <div class="step-title">Entrega</div>
-      <p class="step-desc">Recogida en mano en Telde (Las Palmas) o envío a toda Canarias. Península bajo consulta.</p>
+      <p class="step-desc">Envío a toda Canarias. Península bajo consulta.</p>
     </div>
   </div>
 </section>
@@ -610,7 +621,7 @@ footer {
         <div class="why-icon">⚡</div>
         <div>
           <div class="why-title">Rapidez real</div>
-          <p class="why-desc">Producción propia en Telde. Sin intermediarios, sin esperas de semanas.</p>
+          <p class="why-desc">Producción propia en Canarias. Sin intermediarios, sin esperas de semanas.</p>
         </div>
       </div>
       <div class="why-item reveal">
@@ -653,8 +664,6 @@ footer {
     </div>
   </div>
 </section>
-
-<!-- CONTACTO -->
 
 <!-- MODAL OVERLAY -->
 <div id="modal-overlay" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(11,13,26,.92); backdrop-filter:blur(8px); overflow-y:auto; padding:40px 20px;">
@@ -786,15 +795,427 @@ footer {
   </div>
 </div>
 
+
+
+
+<!-- ESTADÍSTICAS -->
+<section id="stats" style="background:var(--forge); padding:60px 5vw; position:relative; z-index:2; overflow:hidden;">
+  <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:48px 48px; pointer-events:none;"></div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:2rem; text-align:center; position:relative;">
+
+    <div class="stat-counter">
+      <div class="counter-num" data-target="120">0</div>
+      <div class="counter-plus">+</div>
+      <div class="counter-label">Piezas fabricadas</div>
+    </div>
+
+    <div class="stat-counter">
+      <div class="counter-num" data-target="48">0</div>
+      <div class="counter-plus">h</div>
+      <div class="counter-label">Entrega express</div>
+    </div>
+
+    <div class="stat-counter">
+      <div class="counter-num" data-target="5">0</div>
+      <div class="counter-plus"></div>
+      <div class="counter-label">Materiales FDM disponibles</div>
+    </div>
+
+    <div class="stat-counter">
+      <div class="counter-num" data-target="100">0</div>
+      <div class="counter-plus">%</div>
+      <div class="counter-label">Clientes satisfechos</div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.stat-counter { display:flex; flex-direction:column; align-items:center; }
+.counter-num {
+  font-family:'Big Shoulders Display',sans-serif;
+  font-weight:900; font-size:clamp(3rem,6vw,5rem);
+  color:var(--white); line-height:1; display:inline-block;
+}
+.counter-plus {
+  font-family:'Big Shoulders Display',sans-serif;
+  font-weight:900; font-size:2rem; color:rgba(255,255,255,.6);
+  line-height:1; margin-top:-4px;
+}
+.counter-label {
+  font-family:'DM Mono',monospace; font-size:.7rem;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(255,255,255,.7); margin-top:.6rem;
+}
+</style>
+
+<script>
+(function(){
+  let animated = false;
+  function animateCounters() {
+    if(animated) return;
+    animated = true;
+    document.querySelectorAll('.counter-num').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const duration = 1800;
+      const step = 16;
+      const steps = duration / step;
+      const inc = target / steps;
+      let current = 0;
+      const timer = setInterval(() => {
+        current += inc;
+        if(current >= target) { el.textContent = target; clearInterval(timer); }
+        else el.textContent = Math.floor(current);
+      }, step);
+    });
+  }
+  const section = document.getElementById('stats');
+  if(section) {
+    const o = new IntersectionObserver(entries => {
+      if(entries[0].isIntersecting) animateCounters();
+    }, {threshold:.3});
+    o.observe(section);
+  }
+})();
+</script>
+
+<!-- CASOS DE USO -->
+<section id="casos" style="background:var(--navy3); position:relative; z-index:2;">
+  <div class="sec-label">Para quién</div>
+  <h2 class="sec-title reveal">¿Para qué necesitas<br>la impresión 3D?</h2>
+  <p style="max-width:520px; font-size:1rem; color:var(--dim); font-weight:300; line-height:1.8; margin-bottom:3.5rem;" class="reveal">
+    Trabajamos con todo tipo de clientes. Aquí algunos ejemplos de lo que fabricamos.
+  </p>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1px; border:1px solid rgba(230,80,64,.08);">
+
+    <div class="caso-card reveal">
+      <div class="caso-icon">🏠</div>
+      <div class="caso-title">Hogar y bricolaje</div>
+      <p class="caso-desc">Piezas de repuesto, soportes, organizadores, piezas rotas de electrodomésticos, adaptadores y todo lo que no encuentras en ninguna tienda.</p>
+      <div class="caso-tags">
+        <span class="ctag">Repuestos</span>
+        <span class="ctag">Soportes</span>
+        <span class="ctag">Organizadores</span>
+      </div>
+    </div>
+
+    <div class="caso-card reveal">
+      <div class="caso-icon">🏢</div>
+      <div class="caso-title">Empresas y negocios</div>
+      <p class="caso-desc">Prototipos de producto, maquetas, displays para tienda, señalética personalizada y piezas funcionales para maquinaria.</p>
+      <div class="caso-tags">
+        <span class="ctag">Prototipos</span>
+        <span class="ctag">Maquetas</span>
+        <span class="ctag">Displays</span>
+      </div>
+    </div>
+
+    <div class="caso-card reveal">
+      <div class="caso-icon">🎮</div>
+      <div class="caso-title">Makers y aficionados</div>
+      <p class="caso-desc">Carcasas para proyectos electrónicos, piezas para drones, accesorios para cámaras, componentes personalizados y todo lo que imagines.</p>
+      <div class="caso-tags">
+        <span class="ctag">Electrónica</span>
+        <span class="ctag">Drones</span>
+        <span class="ctag">DIY</span>
+      </div>
+    </div>
+
+    <div class="caso-card reveal">
+      <div class="caso-icon">🎨</div>
+      <div class="caso-title">Arte y coleccionismo</div>
+      <p class="caso-desc">Figuras, miniaturas, réplicas, trofeos personalizados, esculturas decorativas y piezas únicas para regalo o colección.</p>
+      <div class="caso-tags">
+        <span class="ctag">Figuras</span>
+        <span class="ctag">Trofeos</span>
+        <span class="ctag">Regalos únicos</span>
+      </div>
+    </div>
+
+    <div class="caso-card reveal">
+      <div class="caso-icon">⚙️</div>
+      <div class="caso-title">Industria y talleres</div>
+      <p class="caso-desc">Utillajes, plantillas, jigs, piezas de recambio difíciles de encontrar, prototipos funcionales y componentes a medida.</p>
+      <div class="caso-tags">
+        <span class="ctag">Utillajes</span>
+        <span class="ctag">Recambios</span>
+        <span class="ctag">A medida</span>
+      </div>
+    </div>
+
+    <div class="caso-card reveal">
+      <div class="caso-icon">🎓</div>
+      <div class="caso-title">Educación y proyectos</div>
+      <p class="caso-desc">Maquetas para trabajos escolares, proyectos universitarios, modelos anatómicos, piezas para TFG y todo tipo de proyectos académicos.</p>
+      <div class="caso-tags">
+        <span class="ctag">Maquetas</span>
+        <span class="ctag">TFG</span>
+        <span class="ctag">Modelos</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.caso-card {
+  background: var(--navy2); padding: 2.2rem;
+  transition: background .3s;
+}
+.caso-card:hover { background: var(--panel); }
+.caso-icon { font-size: 2rem; margin-bottom: .9rem; display: block; }
+.caso-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700; font-size: 1.3rem; color: var(--white); margin-bottom: .6rem;
+}
+.caso-desc { font-size: .86rem; color: var(--dim); line-height: 1.75; font-weight: 300; }
+.caso-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 1.2rem; }
+.ctag {
+  font-family: 'DM Mono', monospace; font-size: .62rem;
+  letter-spacing: .09em; text-transform: uppercase;
+  color: var(--forge); border: 1px solid rgba(230,80,64,.25);
+  padding: 3px 9px;
+}
+</style>
+
+
+<!-- CALCULADORA -->
+<section id="calculadora" style="background:var(--navy2);">
+  <div class="sec-label">Calculadora</div>
+  <h2 class="sec-title reveal">Precio orientativo<br>al instante</h2>
+  <p style="max-width:520px; font-size:1rem; color:var(--dim); font-weight:300; line-height:1.8; margin-bottom:3rem;" class="reveal">
+    Estima el coste de tu pieza en segundos. El presupuesto final puede variar según la geometría y acabado.
+  </p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; max-width:900px;" class="reveal">
+
+    <!-- Controls -->
+    <div style="display:flex; flex-direction:column; gap:2rem;">
+
+      <div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:.6rem;">
+          <label style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);">Tamaño de la pieza</label>
+          <span id="lbl-size" style="font-family:'DM Mono',monospace; font-size:.7rem; color:var(--forge);">Mediano</span>
+        </div>
+        <input type="range" id="sl-size" min="1" max="5" value="2" step="1" oninput="calcPrice()"
+          style="width:100%; accent-color:var(--forge);">
+        <div style="display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:.6rem; color:var(--dim); margin-top:4px;">
+          <span>Miniatura</span><span>Pequeño</span><span>Mediano</span><span>Grande</span><span>Muy grande</span>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:.6rem;">
+          <label style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);">Complejidad</label>
+          <span id="lbl-complex" style="font-family:'DM Mono',monospace; font-size:.7rem; color:var(--forge);">Normal</span>
+        </div>
+        <input type="range" id="sl-complex" min="1" max="3" value="1" step="1" oninput="calcPrice()"
+          style="width:100%; accent-color:var(--forge);">
+        <div style="display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:.6rem; color:var(--dim); margin-top:4px;">
+          <span>Simple</span><span>Normal</span><span>Compleja</span>
+        </div>
+      </div>
+
+      <div>
+        <label style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.6rem;">Material</label>
+        <select id="sl-mat" oninput="calcPrice()"
+          style="width:100%; background:var(--navy); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:10px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none;">
+          <option value="1">PLA — Uso general</option>
+          <option value="1.15">PETG — Resistente</option>
+          <option value="1.4">TPU — Flexible</option>
+          <option value="1.2">ASA — Exterior</option>
+          <option value="1.25">ABS — Alta resistencia</option>
+          <option value="1.3">Especial (madera, metálico…)</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:.6rem;">Cantidad</label>
+        <select id="sl-qty" oninput="calcPrice()"
+          style="width:100%; background:var(--navy); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:10px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none;">
+          <option value="1">1 pieza</option>
+          <option value="0.9">2–5 piezas (−10%)</option>
+          <option value="0.8">6–20 piezas (−20%)</option>
+          <option value="0.65">+20 piezas (−35%)</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Result -->
+    <div style="background:var(--navy3); border:1px solid rgba(230,80,64,.2); padding:2.5rem; display:flex; flex-direction:column; justify-content:center; text-align:center;">
+      <div style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--dim); margin-bottom:1rem;">Estimación orientativa</div>
+      <div id="price-result" style="font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:3.5rem; color:var(--forge); line-height:1; margin-bottom:.5rem;">5 – 12€</div>
+      <div style="font-family:'DM Mono',monospace; font-size:.68rem; color:var(--dim); margin-bottom:2rem;">IGIC 7% incluido · por pieza</div>
+      <div style="width:100%; height:1px; background:rgba(230,80,64,.15); margin-bottom:2rem;"></div>
+      <div style="font-size:.82rem; color:var(--dim); line-height:1.7; margin-bottom:2rem;">
+        El precio final depende de la geometría exacta, soportes necesarios y acabado. Solicita un presupuesto sin compromiso.
+      </div>
+      <button onclick="openModal()" style="background:var(--forge); color:var(--white); border:none; padding:13px 24px; font-family:'DM Mono',monospace; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:background .2s;" onmouseover="this.style.background='var(--ember)'" onmouseout="this.style.background='var(--forge)'">
+        → Pedir presupuesto exacto
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<style>
+@media(max-width:640px){
+  #calculadora > div:last-of-type { grid-template-columns:1fr !important; }
+}
+</style>
+
+<script>
+  const sizeLabels    = ['','Miniatura','Pequeño','Mediano','Grande','Muy grande'];
+  const complexLabels = ['','Simple','Normal','Compleja'];
+  const basePrice     = [[2,4],[5,12],[18,35],[55,110],[130,280]];
+  const complexMult   = [1, 1.35, 1.8];
+
+  function calcPrice() {
+    const size    = parseInt(document.getElementById('sl-size').value);
+    const complex = parseInt(document.getElementById('sl-complex').value);
+    const mat     = parseFloat(document.getElementById('sl-mat').value);
+    const qty     = parseFloat(document.getElementById('sl-qty').value);
+
+    document.getElementById('lbl-size').textContent    = sizeLabels[size];
+    document.getElementById('lbl-complex').textContent = complexLabels[complex];
+
+    const [lo, hi] = basePrice[size - 1];
+    const cm = complexMult[complex - 1];
+    const low  = Math.round(lo * cm * mat * qty);
+    const high = Math.round(hi * cm * mat * qty);
+
+    document.getElementById('price-result').textContent = low + ' – ' + high + '€';
+  }
+  calcPrice();
+</script>
+
+<!-- FAQ -->
+<section id="faq" style="background:var(--navy);">
+  <div class="sec-label">FAQ</div>
+  <h2 class="sec-title reveal">Preguntas frecuentes</h2>
+  <p style="max-width:520px; font-size:1rem; color:var(--dim); font-weight:300; line-height:1.8; margin-bottom:3.5rem;" class="reveal">
+    Todo lo que necesitas saber antes de hacer tu pedido.
+  </p>
+
+  <div style="max-width:780px; display:flex; flex-direction:column; gap:2px;">
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Qué formato de archivo necesito enviar?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        El formato más habitual es <strong>STL</strong>, que exporta cualquier programa de diseño 3D (Fusion 360, Tinkercad, Blender…). También aceptamos OBJ, STEP y 3MF. Si no tienes archivo, puedes enviarnos un boceto, foto o descripción y te ayudamos con el diseño.
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Cuánto tarda en estar lista mi pieza?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        El plazo habitual es de <strong>5 a 7 días laborables</strong> desde la confirmación del pedido. Si necesitas la pieza antes, ofrecemos servicio express en <strong>24 o 48 horas</strong> con coste adicional. Indícalo en el formulario de presupuesto.
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Cuánto cuesta imprimir una pieza?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        El precio depende del tamaño, material, tiempo de impresión y acabado. Piezas pequeñas sencillas pueden estar desde <strong>3–5€</strong>, mientras que piezas grandes o complejas pueden superar los 50€. Rellena el formulario y te enviamos un presupuesto sin compromiso en menos de 24 horas.
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Qué material me recomiendas?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        Depende del uso: <strong>PLA</strong> para decoración y prototipos, <strong>PETG</strong> para piezas funcionales que necesiten resistencia, <strong>TPU</strong> para piezas flexibles, <strong>ASA</strong> para exterior o zonas con sol, y <strong>ABS</strong> para alta resistencia mecánica. Si no lo tienes claro, indícanos el uso y te asesoramos.
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Enviáis fuera de Canarias?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        Sí, enviamos a <strong>toda Canarias</strong> sin problema. Para envíos a Península, Baleares o fuera de España consúltanos primero — depende del tamaño y peso de la pieza. Los gastos de envío se añaden al presupuesto.
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿La factura lleva IVA o IGIC?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        Al estar en Canarias aplicamos <strong>IGIC al 7%</strong> en vez de IVA. Emitimos factura para particulares y empresas. Si necesitas factura con datos de empresa indícalo al hacer el pedido.
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Cómo realizo el pago?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        Aceptamos <strong>transferencia bancaria y Bizum</strong>. El pago se realiza una vez confirmado el presupuesto y antes de iniciar la impresión. Para pedidos recurrentes podemos acordar otras condiciones.
+      </div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Puedo pedir una sola pieza o necesito un mínimo?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        No hay mínimo. Hacemos desde <strong>una sola pieza</strong> hasta series de cientos de unidades. Para pedidos grandes aplicamos descuento por volumen.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.faq-item { background: var(--navy2); border: 1px solid rgba(230,80,64,.08); }
+.faq-q {
+  width: 100%; background: none; border: none; color: var(--light);
+  padding: 1.4rem 1.75rem; text-align: left; cursor: pointer;
+  font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 500;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  transition: color .2s, background .2s;
+}
+.faq-q:hover { color: var(--white); background: var(--panel); }
+.faq-q.open { color: var(--forge); border-bottom: 1px solid rgba(230,80,64,.15); }
+.faq-icon {
+  font-family: 'DM Mono', monospace; font-size: 1.3rem;
+  color: var(--forge); flex-shrink: 0; transition: transform .3s;
+}
+.faq-q.open .faq-icon { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease, padding .3s;
+  font-size: .9rem; color: var(--dim); line-height: 1.8;
+  padding: 0 1.75rem;
+}
+.faq-a.open { max-height: 300px; padding: 1.2rem 1.75rem; }
+.faq-a strong { color: var(--light); }
+</style>
+
 <!-- CONTACTO -->
 <section id="contacto">
   <div class="sec-label" style="justify-content:center">Contacto</div>
   <h2 class="contact-title reveal">HABLEMOS<br>DE TU <em>PROYECTO</em></h2>
   <p class="contact-sub reveal">Cuéntanos qué necesitas. Respondemos en menos de 24 horas con un presupuesto sin compromiso.</p>
   <div class="chips reveal">
-    <a href="mailto:info@forge3d.es" class="chip">✉️ info@forge3d.es</a>
-    <a href="https://wa.me/34600000000" class="chip">💬 WhatsApp</a>
-    <a href="#" class="chip">📍 Telde, Las Palmas</a>
   </div>
   <button onclick="openModal()" class="btn-primary reveal" style="display:inline-flex; border:none; cursor:pointer;">
     → Solicitar presupuesto gratis
@@ -805,7 +1226,7 @@ footer {
 <footer>
   <div class="footer-logo">FORGE<span>3D</span></div>
   <div class="footer-info">
-    Telde · Las Palmas de Gran Canaria · Islas Canarias<br>
+    Islas Canarias<br>
     info@forge3d.es · forge3d.es
   </div>
   <div class="footer-copy">© 2026 FORGE3D</div>
@@ -853,6 +1274,22 @@ footer {
       a.style.color = a.getAttribute('href')==='#'+current ? 'var(--forge)' : '';
     });
   });
+
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-q.open').forEach(b => {
+      b.classList.remove('open');
+      b.nextElementSibling.classList.remove('open');
+    });
+    // Open clicked if it was closed
+    if(!isOpen) {
+      btn.classList.add('open');
+      answer.classList.add('open');
+    }
+  }
 
   // Modal
   function openModal() {
@@ -932,5 +1369,40 @@ footer {
     }
   }
 </script>
+
+<!-- BOTÓN FLOTANTE -->
+<div id="fab" style="position:fixed; bottom:28px; right:28px; z-index:500; display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
+
+  <!-- Opciones -->
+  <div id="fab-options" style="display:none; flex-direction:column; gap:8px; align-items:flex-end;">
+    <button onclick="openModal(); toggleFab()" style="background:var(--navy3); color:var(--light); border:1px solid rgba(230,80,64,.3); padding:10px 18px; font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.09em; cursor:pointer; white-space:nowrap; transition:background .2s;" onmouseover="this.style.background='var(--panel)'" onmouseout="this.style.background='var(--navy3)'">
+      📋 Solicitar presupuesto
+    </button>
+    <a href="mailto:info@forge3d.es" style="background:var(--navy3); color:var(--light); border:1px solid rgba(230,80,64,.3); padding:10px 18px; font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.09em; text-decoration:none; white-space:nowrap; transition:background .2s;" onmouseover="this.style.background='var(--panel)'" onmouseout="this.style.background='var(--navy3)'">
+      ✉️ info@forge3d.es
+    </a>
+  </div>
+
+  <!-- Main button -->
+  <button id="fab-btn" onclick="toggleFab()" style="width:56px; height:56px; background:var(--forge); border:none; color:var(--white); font-size:1.4rem; cursor:pointer; border-radius:0; box-shadow:0 4px 20px rgba(230,80,64,.4); transition:background .2s, transform .2s;" onmouseover="this.style.background='var(--ember)'" onmouseout="this.style.background='var(--forge)'">
+    ✉
+  </button>
+</div>
+
+<script>
+  let fabOpen = false;
+  function toggleFab() {
+    fabOpen = !fabOpen;
+    const opts = document.getElementById('fab-options');
+    const btn  = document.getElementById('fab-btn');
+    opts.style.display = fabOpen ? 'flex' : 'none';
+    btn.textContent    = fabOpen ? '✕' : '✉';
+    btn.style.transform = fabOpen ? 'rotate(0deg)' : '';
+  }
+  // Hide FAB when modal is open
+  const origOpen  = window.openModal;
+  const origClose = window.closeModal;
+</script>
+
 </body>
 </html>
