@@ -375,6 +375,78 @@ footer {
   .steps::before { display: none; }
   .hero-stats { gap: 1.5rem; }
 }
+/* MATERIALES TABS */
+.mat-tabs {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.mat-tab {
+  font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .08em;
+  padding: 8px 20px; background: transparent;
+  border: 1px solid var(--panel); color: var(--dim);
+  cursor: pointer; transition: all .2s;
+}
+.mat-tab:hover { border-color: var(--forge); color: var(--light); }
+.mat-tab.active { background: var(--forge); border-color: var(--forge); color: var(--white); }
+
+.mat-detail-wrap { position: relative; }
+.mat-detail { display: none; }
+.mat-detail.active { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; }
+
+.mat-detail-left {
+  background: var(--navy2); border: 1px solid var(--panel);
+  padding: 2rem; display: flex; flex-direction: column; gap: .8rem;
+}
+.mat-detail-badge {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 2.8rem; line-height: 1;
+  border-bottom: 2px solid; padding-bottom: .5rem;
+}
+.mat-detail-title { font-size: 1.1rem; font-weight: 600; color: var(--white); }
+.mat-detail-sub { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--dim); }
+.mat-detail-desc { font-size: .88rem; color: var(--light); line-height: 1.6; flex: 1; }
+.mat-price-badge {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  padding: 6px 12px; border: 1px solid var(--forge);
+  color: var(--forge); align-self: flex-start;
+}
+
+.mat-detail-right {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.mat-col { display: flex; flex-direction: column; gap: .5rem; }
+.mat-col-title {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  color: var(--forge); margin-bottom: .3rem; padding-bottom: .3rem;
+  border-bottom: 1px solid var(--panel);
+}
+.mat-item { font-size: .85rem; color: var(--light); padding: 4px 0; }
+.mat-item.mat-no { color: var(--dim); }
+
+.mat-prop-row {
+  display: flex; align-items: center; gap: .6rem;
+  font-family: 'DM Mono', monospace; font-size: .64rem; color: var(--dim);
+}
+.mat-prop-row span { width: 80px; flex-shrink: 0; }
+.mat-bar {
+  flex: 1; height: 4px; background: var(--panel); border-radius: 2px; overflow: hidden;
+}
+.mat-bar div { height: 100%; background: var(--forge); border-radius: 2px; }
+
+.mat-cta {
+  margin-top: 3rem; padding: 2rem;
+  background: var(--navy2); border: 1px solid var(--panel);
+  border-left: 3px solid var(--forge);
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  flex-wrap: wrap;
+}
+.mat-cta p { color: var(--light); font-size: .95rem; margin: 0; }
+
+@media (max-width: 768px) {
+  .mat-detail.active { grid-template-columns: 1fr; }
+  .mat-detail-right { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -437,8 +509,8 @@ footer {
       <div class="stat-lbl">Material · Bambu Lab AMS</div>
     </div>
     <div class="stat">
-      <div class="stat-num">5-7</div>
-      <div class="stat-lbl">Días laborables de entrega</div>
+      <div class="stat-num">48h</div>
+      <div class="stat-lbl">Entrega express disponible</div>
     </div>
   </div>
   <svg class="hero-deco" viewBox="0 0 500 500" fill="none">
@@ -506,7 +578,7 @@ footer {
       <div class="scard-num">05</div>
       <span class="scard-icon">🚀</span>
       <div class="scard-name">Entrega express</div>
-      <p class="scard-desc">Enviamos a cualquier punto de Canarias. Plazo habitual de 5 a 7 días laborables desde la confirmación del pedido.</p>
+      <p class="scard-desc">Servicio prioritario en 24–48 horas para pedidos urgentes dentro de Canarias. Recogida en Telde o envío a domicilio.</p>
       <div class="scard-tags">
         <span class="tag">24h</span><span class="tag">48h</span><span class="tag">Canarias</span>
       </div>
@@ -515,73 +587,197 @@ footer {
 </section>
 
 <!-- MATERIALES -->
+<!-- MATERIALES MEJORADO -->
 <section id="materiales">
   <div class="sec-label">Materiales</div>
   <h2 class="sec-title reveal">El material correcto<br>para cada proyecto</h2>
-  <p class="mat-intro reveal">Trabajamos con un catálogo seleccionado de filamentos FDM. Cada material tiene sus fortalezas — te asesoramos sobre cuál usar.</p>
-  <div class="mat-grid">
-    <div class="mcard reveal">
-      <span class="mdot" style="background:#4fc3f7"></span>
-      <div class="mname">PLA</div>
-      <div class="mdesc">El más versátil. Fácil de imprimir, acabado excelente y gran variedad de colores.</div>
-      <div class="mprops">
-        <span class="mprop">Prototipos y decoración</span>
-        <span class="mprop">Buena rigidez</span>
-        <span class="mprop">Gran variedad de colores</span>
+  <p class="mat-intro reveal">Trabajamos con filamentos FDM de calidad. Cada material tiene sus fortalezas — te asesoramos sobre cuál elegir sin coste adicional.</p>
+
+  <!-- Tabs de materiales -->
+  <div class="mat-tabs reveal">
+    <button class="mat-tab active" onclick="showMat('pla',this)">PLA</button>
+    <button class="mat-tab" onclick="showMat('petg',this)">PETG</button>
+    <button class="mat-tab" onclick="showMat('tpu',this)">TPU</button>
+    <button class="mat-tab" onclick="showMat('asa',this)">ASA</button>
+    <button class="mat-tab" onclick="showMat('plcf',this)">PLA-CF</button>
+  </div>
+
+  <div class="mat-detail-wrap">
+
+    <div class="mat-detail active" id="mat-pla">
+      <div class="mat-detail-left">
+        <div class="mat-detail-badge" style="color:#4fc3f7; border-color:#4fc3f7">PLA</div>
+        <div class="mat-detail-title">El más popular</div>
+        <div class="mat-detail-sub">Fácil · Económico · Gran acabado</div>
+        <div class="mat-detail-desc">El PLA es nuestro material más recomendado para proyectos decorativos o de interior. Ofrece el mejor acabado superficial y está disponible en la mayor variedad de colores.</div>
+        <div class="mat-price-badge">Sin recargo adicional</div>
+      </div>
+      <div class="mat-detail-right">
+        <div class="mat-col">
+          <div class="mat-col-title">✓ Ideal para</div>
+          <div class="mat-item">Figuras y decoración</div>
+          <div class="mat-item">Prototipos visuales</div>
+          <div class="mat-item">Piezas de interior</div>
+          <div class="mat-item">Regalos personalizados</div>
+          <div class="mat-item">Maquetas y réplicas</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">✗ No recomendado</div>
+          <div class="mat-item mat-no">Exteriores con sol directo</div>
+          <div class="mat-item mat-no">Calor &gt; 60°C</div>
+          <div class="mat-item mat-no">Uso mecánico intenso</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">📊 Propiedades</div>
+          <div class="mat-prop-row"><span>Resistencia</span><div class="mat-bar"><div style="width:40%"></div></div></div>
+          <div class="mat-prop-row"><span>Temperatura</span><div class="mat-bar"><div style="width:30%"></div></div></div>
+          <div class="mat-prop-row"><span>Acabado</span><div class="mat-bar"><div style="width:95%"></div></div></div>
+          <div class="mat-prop-row"><span>Precio</span><div class="mat-bar"><div style="width:20%; background:var(--ember)"></div></div></div>
+        </div>
       </div>
     </div>
-    <div class="mcard reveal">
-      <span class="mdot" style="background:#81c784"></span>
-      <div class="mname">PETG</div>
-      <div class="mdesc">Resistente a impactos y humedad. El equilibrio perfecto entre facilidad y prestaciones.</div>
-      <div class="mprops">
-        <span class="mprop">Piezas funcionales</span>
-        <span class="mprop">Resistente a golpes</span>
-        <span class="mprop">Semi-flexible</span>
+
+    <div class="mat-detail" id="mat-petg">
+      <div class="mat-detail-left">
+        <div class="mat-detail-badge" style="color:#81c784; border-color:#81c784">PETG</div>
+        <div class="mat-detail-title">Resistente y versátil</div>
+        <div class="mat-detail-sub">Funcional · Duradero · Semi-flexible</div>
+        <div class="mat-detail-desc">El equilibrio perfecto entre facilidad de impresión y resistencia. Ideal cuando la pieza va a sufrir uso real. Aguanta golpes, humedad y temperaturas moderadas.</div>
+        <div class="mat-price-badge">+10% sobre precio base</div>
+      </div>
+      <div class="mat-detail-right">
+        <div class="mat-col">
+          <div class="mat-col-title">✓ Ideal para</div>
+          <div class="mat-item">Piezas funcionales</div>
+          <div class="mat-item">Componentes mecánicos</div>
+          <div class="mat-item">Uso en cocina/baño</div>
+          <div class="mat-item">Carcasas y fundas</div>
+          <div class="mat-item">Exterior moderado</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">✗ No recomendado</div>
+          <div class="mat-item mat-no">Acabados muy finos</div>
+          <div class="mat-item mat-no">Figuras detalladas</div>
+          <div class="mat-item mat-no">Presupuesto muy ajustado</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">📊 Propiedades</div>
+          <div class="mat-prop-row"><span>Resistencia</span><div class="mat-bar"><div style="width:65%"></div></div></div>
+          <div class="mat-prop-row"><span>Temperatura</span><div class="mat-bar"><div style="width:55%"></div></div></div>
+          <div class="mat-prop-row"><span>Acabado</span><div class="mat-bar"><div style="width:70%"></div></div></div>
+          <div class="mat-prop-row"><span>Precio</span><div class="mat-bar"><div style="width:40%; background:var(--ember)"></div></div></div>
+        </div>
       </div>
     </div>
-    <div class="mcard reveal">
-      <span class="mdot" style="background:#ffb74d"></span>
-      <div class="mname">TPU</div>
-      <div class="mdesc">Filamento flexible y elástico. Para piezas que necesitan doblar sin romperse.</div>
-      <div class="mprops">
-        <span class="mprop">100% flexible</span>
-        <span class="mprop">Resistente al desgaste</span>
-        <span class="mprop">Antideslizante</span>
+
+    <div class="mat-detail" id="mat-tpu">
+      <div class="mat-detail-left">
+        <div class="mat-detail-badge" style="color:#ffb74d; border-color:#ffb74d">TPU</div>
+        <div class="mat-detail-title">Flexible y elástico</div>
+        <div class="mat-detail-sub">Goma · Absorbe golpes · Desgaste mínimo</div>
+        <div class="mat-detail-desc">El TPU es como la goma en 3D. Dobla, estira y absorbe impactos sin romperse. Perfecto para fundas, amortiguadores y cualquier pieza que necesite flexibilidad.</div>
+        <div class="mat-price-badge">+20% sobre precio base</div>
+      </div>
+      <div class="mat-detail-right">
+        <div class="mat-col">
+          <div class="mat-col-title">✓ Ideal para</div>
+          <div class="mat-item">Fundas de móvil/tablet</div>
+          <div class="mat-item">Juntas y amortiguadores</div>
+          <div class="mat-item">Ruedas y rodillos</div>
+          <div class="mat-item">Accesorios deportivos</div>
+          <div class="mat-item">Piezas con vibración</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">✗ No recomendado</div>
+          <div class="mat-item mat-no">Piezas rígidas</div>
+          <div class="mat-item mat-no">Estructuras de soporte</div>
+          <div class="mat-item mat-no">Alta temperatura</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">📊 Propiedades</div>
+          <div class="mat-prop-row"><span>Flexibilidad</span><div class="mat-bar"><div style="width:100%"></div></div></div>
+          <div class="mat-prop-row"><span>Resistencia</span><div class="mat-bar"><div style="width:75%"></div></div></div>
+          <div class="mat-prop-row"><span>Acabado</span><div class="mat-bar"><div style="width:60%"></div></div></div>
+          <div class="mat-prop-row"><span>Precio</span><div class="mat-bar"><div style="width:45%; background:var(--ember)"></div></div></div>
+        </div>
       </div>
     </div>
-    <div class="mcard reveal">
-      <span class="mdot" style="background:#f06292"></span>
-      <div class="mname">ASA</div>
-      <div class="mdesc">Diseñado para exterior. Resistente a UV, lluvia y temperatura extrema.</div>
-      <div class="mprops">
-        <span class="mprop">Resistencia UV</span>
-        <span class="mprop">Uso exterior</span>
-        <span class="mprop">Alta temperatura</span>
+
+    <div class="mat-detail" id="mat-asa">
+      <div class="mat-detail-left">
+        <div class="mat-detail-badge" style="color:#ef9a9a; border-color:#ef9a9a">ASA</div>
+        <div class="mat-detail-title">Rey del exterior</div>
+        <div class="mat-detail-sub">UV · Lluvia · Alta temperatura</div>
+        <div class="mat-detail-desc">Si tu pieza va al exterior, el ASA es la única opción. Resiste el sol, la lluvia y el calor sin deformarse ni decolorarse. El PLA se destruye en semanas al sol directo.</div>
+        <div class="mat-price-badge">+15% sobre precio base</div>
+      </div>
+      <div class="mat-detail-right">
+        <div class="mat-col">
+          <div class="mat-col-title">✓ Ideal para</div>
+          <div class="mat-item">Señalización exterior</div>
+          <div class="mat-item">Piezas para jardín/terraza</div>
+          <div class="mat-item">Automoción exterior</div>
+          <div class="mat-item">Drones y RC</div>
+          <div class="mat-item">Cualquier uso a la intemperie</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">✗ No recomendado</div>
+          <div class="mat-item mat-no">Interior (precio mayor)</div>
+          <div class="mat-item mat-no">Figuras decorativas</div>
+          <div class="mat-item mat-no">Colores muy vivos</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">📊 Propiedades</div>
+          <div class="mat-prop-row"><span>Resistencia UV</span><div class="mat-bar"><div style="width:100%"></div></div></div>
+          <div class="mat-prop-row"><span>Temperatura</span><div class="mat-bar"><div style="width:85%"></div></div></div>
+          <div class="mat-prop-row"><span>Acabado</span><div class="mat-bar"><div style="width:65%"></div></div></div>
+          <div class="mat-prop-row"><span>Precio</span><div class="mat-bar"><div style="width:55%; background:var(--ember)"></div></div></div>
+        </div>
       </div>
     </div>
-    <div class="mcard reveal">
-      <span class="mdot" style="background:#ce93d8"></span>
-      <div class="mname">ABS</div>
-      <div class="mdesc">Clásico industrial. Alta resistencia mecánica y térmica para piezas exigentes.</div>
-      <div class="mprops">
-        <span class="mprop">Alta resistencia</span>
-        <span class="mprop">Mecanizable</span>
-        <span class="mprop">Alta temperatura</span>
+
+    <div class="mat-detail" id="mat-plcf">
+      <div class="mat-detail-left">
+        <div class="mat-detail-badge" style="color:#ce93d8; border-color:#ce93d8">PLA-CF</div>
+        <div class="mat-detail-title">Aspecto premium</div>
+        <div class="mat-detail-sub">Fibra de carbono · Mate · Industrial</div>
+        <div class="mat-detail-desc">El PLA reforzado con fibra de carbono tiene un acabado mate oscuro extremadamente elegante. Rígido, ligero y con aspecto industrial. Ideal para piezas de presentación.</div>
+        <div class="mat-price-badge">+25% sobre precio base</div>
+      </div>
+      <div class="mat-detail-right">
+        <div class="mat-col">
+          <div class="mat-col-title">✓ Ideal para</div>
+          <div class="mat-item">Piezas de presentación</div>
+          <div class="mat-item">Componentes de drones/RC</div>
+          <div class="mat-item">Accesorios premium</div>
+          <div class="mat-item">Soportes y brazos rígidos</div>
+          <div class="mat-item">Proyectos de diseño</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">✗ No recomendado</div>
+          <div class="mat-item mat-no">Piezas flexibles</div>
+          <div class="mat-item mat-no">Presupuesto ajustado</div>
+          <div class="mat-item mat-no">Exterior (UV)</div>
+        </div>
+        <div class="mat-col">
+          <div class="mat-col-title">📊 Propiedades</div>
+          <div class="mat-prop-row"><span>Rigidez</span><div class="mat-bar"><div style="width:95%"></div></div></div>
+          <div class="mat-prop-row"><span>Acabado mate</span><div class="mat-bar"><div style="width:100%"></div></div></div>
+          <div class="mat-prop-row"><span>Ligereza</span><div class="mat-bar"><div style="width:85%"></div></div></div>
+          <div class="mat-prop-row"><span>Precio</span><div class="mat-bar"><div style="width:70%; background:var(--ember)"></div></div></div>
+        </div>
       </div>
     </div>
-    <div class="mcard reveal">
-      <span class="mdot" style="background:#a5d6a7"></span>
-      <div class="mname">Especiales</div>
-      <div class="mdesc">PLA Madera, PLA Metálico, PLA Seda y acabados únicos para proyectos creativos.</div>
-      <div class="mprops">
-        <span class="mprop">Acabados únicos</span>
-        <span class="mprop">Proyectos creativos</span>
-        <span class="mprop">Alta calidad visual</span>
-      </div>
-    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="mat-cta reveal">
+    <p>¿No sabes qué material elegir? Cuéntanos tu proyecto y te asesoramos sin compromiso.</p>
+    <button class="btn-primary" onclick="document.getElementById('modal-overlay').style.display='flex'">Pedir asesoramiento gratis</button>
   </div>
 </section>
+
 
 <!-- PROCESO -->
 <section id="proceso">
@@ -739,6 +935,8 @@ footer {
             style="width:100%; background:var(--navy2); border:1px solid rgba(107,117,153,.3); color:var(--light); padding:12px 14px; font-family:'Outfit',sans-serif; font-size:.95rem; outline:none; transition:border-color .2s; appearance:none;"
             onfocus="this.style.borderColor='var(--forge)'" onblur="this.style.borderColor='rgba(107,117,153,.3)'">
             <option value="Normal">Normal (5–7 días)</option>
+            <option value="Express 48h">Express 48h</option>
+            <option value="Express 24h">Express 24h</option>
             <option value="Sin prisa">Sin prisa</option>
           </select>
         </div>
@@ -787,10 +985,7 @@ footer {
       <div style="font-size:3rem; margin-bottom:1rem;">✅</div>
       <div style="font-family:'Big Shoulders Display',sans-serif; font-weight:900; font-size:1.8rem; color:var(--white); margin-bottom:.75rem;">¡Solicitud enviada!</div>
       <div style="font-size:.95rem; color:var(--dim); margin-bottom:2rem;">Te responderemos en menos de 24 horas con tu presupuesto.</div>
-      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-        <button onclick="resetForm()" style="background:var(--navy3); color:var(--light); border:1px solid rgba(230,80,64,.4); padding:12px 24px; font-family:'DM Mono',monospace; font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;">Enviar otro presupuesto</button>
-        <button onclick="closeModal()" style="background:var(--forge); color:var(--white); border:none; padding:12px 24px; font-family:'DM Mono',monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;">Cerrar</button>
-      </div>
+      <button onclick="closeModal()" style="background:var(--forge); color:var(--white); border:none; padding:12px 32px; font-family:'DM Mono',monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;">Cerrar</button>
     </div>
 
   </div>
@@ -811,9 +1006,9 @@ footer {
     </div>
 
     <div class="stat-counter">
-      <div class="counter-num" data-target="7">0</div>
+      <div class="counter-num" data-target="48">0</div>
       <div class="counter-plus">h</div>
-      <div class="counter-label">Días laborables</div>
+      <div class="counter-label">Entrega express</div>
     </div>
 
     <div class="stat-counter">
@@ -848,6 +1043,78 @@ footer {
   letter-spacing:.14em; text-transform:uppercase;
   color:rgba(255,255,255,.7); margin-top:.6rem;
 }
+/* MATERIALES TABS */
+.mat-tabs {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.mat-tab {
+  font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .08em;
+  padding: 8px 20px; background: transparent;
+  border: 1px solid var(--panel); color: var(--dim);
+  cursor: pointer; transition: all .2s;
+}
+.mat-tab:hover { border-color: var(--forge); color: var(--light); }
+.mat-tab.active { background: var(--forge); border-color: var(--forge); color: var(--white); }
+
+.mat-detail-wrap { position: relative; }
+.mat-detail { display: none; }
+.mat-detail.active { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; }
+
+.mat-detail-left {
+  background: var(--navy2); border: 1px solid var(--panel);
+  padding: 2rem; display: flex; flex-direction: column; gap: .8rem;
+}
+.mat-detail-badge {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 2.8rem; line-height: 1;
+  border-bottom: 2px solid; padding-bottom: .5rem;
+}
+.mat-detail-title { font-size: 1.1rem; font-weight: 600; color: var(--white); }
+.mat-detail-sub { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--dim); }
+.mat-detail-desc { font-size: .88rem; color: var(--light); line-height: 1.6; flex: 1; }
+.mat-price-badge {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  padding: 6px 12px; border: 1px solid var(--forge);
+  color: var(--forge); align-self: flex-start;
+}
+
+.mat-detail-right {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.mat-col { display: flex; flex-direction: column; gap: .5rem; }
+.mat-col-title {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  color: var(--forge); margin-bottom: .3rem; padding-bottom: .3rem;
+  border-bottom: 1px solid var(--panel);
+}
+.mat-item { font-size: .85rem; color: var(--light); padding: 4px 0; }
+.mat-item.mat-no { color: var(--dim); }
+
+.mat-prop-row {
+  display: flex; align-items: center; gap: .6rem;
+  font-family: 'DM Mono', monospace; font-size: .64rem; color: var(--dim);
+}
+.mat-prop-row span { width: 80px; flex-shrink: 0; }
+.mat-bar {
+  flex: 1; height: 4px; background: var(--panel); border-radius: 2px; overflow: hidden;
+}
+.mat-bar div { height: 100%; background: var(--forge); border-radius: 2px; }
+
+.mat-cta {
+  margin-top: 3rem; padding: 2rem;
+  background: var(--navy2); border: 1px solid var(--panel);
+  border-left: 3px solid var(--forge);
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  flex-wrap: wrap;
+}
+.mat-cta p { color: var(--light); font-size: .95rem; margin: 0; }
+
+@media (max-width: 768px) {
+  .mat-detail.active { grid-template-columns: 1fr; }
+  .mat-detail-right { grid-template-columns: 1fr; }
+}
+
 </style>
 
 <script>
@@ -978,6 +1245,78 @@ footer {
   color: var(--forge); border: 1px solid rgba(230,80,64,.25);
   padding: 3px 9px;
 }
+/* MATERIALES TABS */
+.mat-tabs {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.mat-tab {
+  font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .08em;
+  padding: 8px 20px; background: transparent;
+  border: 1px solid var(--panel); color: var(--dim);
+  cursor: pointer; transition: all .2s;
+}
+.mat-tab:hover { border-color: var(--forge); color: var(--light); }
+.mat-tab.active { background: var(--forge); border-color: var(--forge); color: var(--white); }
+
+.mat-detail-wrap { position: relative; }
+.mat-detail { display: none; }
+.mat-detail.active { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; }
+
+.mat-detail-left {
+  background: var(--navy2); border: 1px solid var(--panel);
+  padding: 2rem; display: flex; flex-direction: column; gap: .8rem;
+}
+.mat-detail-badge {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 2.8rem; line-height: 1;
+  border-bottom: 2px solid; padding-bottom: .5rem;
+}
+.mat-detail-title { font-size: 1.1rem; font-weight: 600; color: var(--white); }
+.mat-detail-sub { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--dim); }
+.mat-detail-desc { font-size: .88rem; color: var(--light); line-height: 1.6; flex: 1; }
+.mat-price-badge {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  padding: 6px 12px; border: 1px solid var(--forge);
+  color: var(--forge); align-self: flex-start;
+}
+
+.mat-detail-right {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.mat-col { display: flex; flex-direction: column; gap: .5rem; }
+.mat-col-title {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  color: var(--forge); margin-bottom: .3rem; padding-bottom: .3rem;
+  border-bottom: 1px solid var(--panel);
+}
+.mat-item { font-size: .85rem; color: var(--light); padding: 4px 0; }
+.mat-item.mat-no { color: var(--dim); }
+
+.mat-prop-row {
+  display: flex; align-items: center; gap: .6rem;
+  font-family: 'DM Mono', monospace; font-size: .64rem; color: var(--dim);
+}
+.mat-prop-row span { width: 80px; flex-shrink: 0; }
+.mat-bar {
+  flex: 1; height: 4px; background: var(--panel); border-radius: 2px; overflow: hidden;
+}
+.mat-bar div { height: 100%; background: var(--forge); border-radius: 2px; }
+
+.mat-cta {
+  margin-top: 3rem; padding: 2rem;
+  background: var(--navy2); border: 1px solid var(--panel);
+  border-left: 3px solid var(--forge);
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  flex-wrap: wrap;
+}
+.mat-cta p { color: var(--light); font-size: .95rem; margin: 0; }
+
+@media (max-width: 768px) {
+  .mat-detail.active { grid-template-columns: 1fr; }
+  .mat-detail-right { grid-template-columns: 1fr; }
+}
+
 </style>
 
 
@@ -1065,6 +1404,78 @@ footer {
 @media(max-width:640px){
   #calculadora > div:last-of-type { grid-template-columns:1fr !important; }
 }
+/* MATERIALES TABS */
+.mat-tabs {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.mat-tab {
+  font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .08em;
+  padding: 8px 20px; background: transparent;
+  border: 1px solid var(--panel); color: var(--dim);
+  cursor: pointer; transition: all .2s;
+}
+.mat-tab:hover { border-color: var(--forge); color: var(--light); }
+.mat-tab.active { background: var(--forge); border-color: var(--forge); color: var(--white); }
+
+.mat-detail-wrap { position: relative; }
+.mat-detail { display: none; }
+.mat-detail.active { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; }
+
+.mat-detail-left {
+  background: var(--navy2); border: 1px solid var(--panel);
+  padding: 2rem; display: flex; flex-direction: column; gap: .8rem;
+}
+.mat-detail-badge {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 2.8rem; line-height: 1;
+  border-bottom: 2px solid; padding-bottom: .5rem;
+}
+.mat-detail-title { font-size: 1.1rem; font-weight: 600; color: var(--white); }
+.mat-detail-sub { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--dim); }
+.mat-detail-desc { font-size: .88rem; color: var(--light); line-height: 1.6; flex: 1; }
+.mat-price-badge {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  padding: 6px 12px; border: 1px solid var(--forge);
+  color: var(--forge); align-self: flex-start;
+}
+
+.mat-detail-right {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.mat-col { display: flex; flex-direction: column; gap: .5rem; }
+.mat-col-title {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  color: var(--forge); margin-bottom: .3rem; padding-bottom: .3rem;
+  border-bottom: 1px solid var(--panel);
+}
+.mat-item { font-size: .85rem; color: var(--light); padding: 4px 0; }
+.mat-item.mat-no { color: var(--dim); }
+
+.mat-prop-row {
+  display: flex; align-items: center; gap: .6rem;
+  font-family: 'DM Mono', monospace; font-size: .64rem; color: var(--dim);
+}
+.mat-prop-row span { width: 80px; flex-shrink: 0; }
+.mat-bar {
+  flex: 1; height: 4px; background: var(--panel); border-radius: 2px; overflow: hidden;
+}
+.mat-bar div { height: 100%; background: var(--forge); border-radius: 2px; }
+
+.mat-cta {
+  margin-top: 3rem; padding: 2rem;
+  background: var(--navy2); border: 1px solid var(--panel);
+  border-left: 3px solid var(--forge);
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  flex-wrap: wrap;
+}
+.mat-cta p { color: var(--light); font-size: .95rem; margin: 0; }
+
+@media (max-width: 768px) {
+  .mat-detail.active { grid-template-columns: 1fr; }
+  .mat-detail-right { grid-template-columns: 1fr; }
+}
+
 </style>
 
 <script>
@@ -1118,7 +1529,7 @@ footer {
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-a">
-        El plazo habitual es de <strong>5 a 7 días laborables</strong> desde la confirmación del pedido. Contáctanos si tienes una fecha límite y lo valoramos.
+        El plazo habitual es de <strong>5 a 7 días laborables</strong> desde la confirmación del pedido. Si necesitas la pieza antes, ofrecemos servicio express en <strong>24 o 48 horas</strong> con coste adicional. Indícalo en el formulario de presupuesto.
       </div>
     </div>
 
@@ -1209,6 +1620,78 @@ footer {
 }
 .faq-a.open { max-height: 300px; padding: 1.2rem 1.75rem; }
 .faq-a strong { color: var(--light); }
+/* MATERIALES TABS */
+.mat-tabs {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.mat-tab {
+  font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .08em;
+  padding: 8px 20px; background: transparent;
+  border: 1px solid var(--panel); color: var(--dim);
+  cursor: pointer; transition: all .2s;
+}
+.mat-tab:hover { border-color: var(--forge); color: var(--light); }
+.mat-tab.active { background: var(--forge); border-color: var(--forge); color: var(--white); }
+
+.mat-detail-wrap { position: relative; }
+.mat-detail { display: none; }
+.mat-detail.active { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; }
+
+.mat-detail-left {
+  background: var(--navy2); border: 1px solid var(--panel);
+  padding: 2rem; display: flex; flex-direction: column; gap: .8rem;
+}
+.mat-detail-badge {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900; font-size: 2.8rem; line-height: 1;
+  border-bottom: 2px solid; padding-bottom: .5rem;
+}
+.mat-detail-title { font-size: 1.1rem; font-weight: 600; color: var(--white); }
+.mat-detail-sub { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--dim); }
+.mat-detail-desc { font-size: .88rem; color: var(--light); line-height: 1.6; flex: 1; }
+.mat-price-badge {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  padding: 6px 12px; border: 1px solid var(--forge);
+  color: var(--forge); align-self: flex-start;
+}
+
+.mat-detail-right {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.mat-col { display: flex; flex-direction: column; gap: .5rem; }
+.mat-col-title {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  color: var(--forge); margin-bottom: .3rem; padding-bottom: .3rem;
+  border-bottom: 1px solid var(--panel);
+}
+.mat-item { font-size: .85rem; color: var(--light); padding: 4px 0; }
+.mat-item.mat-no { color: var(--dim); }
+
+.mat-prop-row {
+  display: flex; align-items: center; gap: .6rem;
+  font-family: 'DM Mono', monospace; font-size: .64rem; color: var(--dim);
+}
+.mat-prop-row span { width: 80px; flex-shrink: 0; }
+.mat-bar {
+  flex: 1; height: 4px; background: var(--panel); border-radius: 2px; overflow: hidden;
+}
+.mat-bar div { height: 100%; background: var(--forge); border-radius: 2px; }
+
+.mat-cta {
+  margin-top: 3rem; padding: 2rem;
+  background: var(--navy2); border: 1px solid var(--panel);
+  border-left: 3px solid var(--forge);
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  flex-wrap: wrap;
+}
+.mat-cta p { color: var(--light); font-size: .95rem; margin: 0; }
+
+@media (max-width: 768px) {
+  .mat-detail.active { grid-template-columns: 1fr; }
+  .mat-detail-right { grid-template-columns: 1fr; }
+}
+
 </style>
 
 <!-- CONTACTO -->
@@ -1228,12 +1711,12 @@ footer {
   <div class="footer-logo">FORGE<span>3D</span></div>
   <div class="footer-info">
     Islas Canarias<br>
-    info@forge3d.es · forge3d.es
+    <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2abaca4ad82a4adb0a5a7f1a6eca7b1">[email&#160;protected]</a> · forge3d.es
   </div>
   <div class="footer-copy">© 2026 FORGE3D</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const cur  = document.getElementById('cur');
   const ring = document.getElementById('ring');
   let mx=0,my=0,rx=0,ry=0;
@@ -1339,20 +1822,6 @@ footer {
     }
   }
 
-  // Reset form helper
-  function resetForm() {
-    const form = document.getElementById('presupuesto-form');
-    const btn  = document.getElementById('submit-btn');
-    form.reset();
-    form.style.display = 'block';
-    document.getElementById('success-msg').style.display = 'none';
-    document.getElementById('drop-label').innerHTML = 'Arrastra tu archivo aquí o <span style="color:var(--forge)">haz clic para seleccionar</span>';
-    document.getElementById('drop-zone').style.borderColor = '';
-    btn.textContent = '→ Solicitar presupuesto';
-    btn.style.background = 'var(--forge)';
-    btn.disabled = false;
-  }
-
   // Form submit
   async function handleSubmit(e) {
     e.preventDefault();
@@ -1361,31 +1830,15 @@ footer {
     btn.style.background = 'var(--navy3)';
     btn.disabled = true;
 
-    const fileInput = document.getElementById('archivo');
-    const file = fileInput.files[0];
-
-    // Build JSON payload (Web3Forms accepts JSON + optional attachment info)
-    const data = {
-      access_key: 'a5ba57f3-fbba-45da-a861-44e376fb9189',
-      name:        document.querySelector('[name="name"]').value,
-      email:       document.querySelector('[name="email"]').value,
-      telefono:    document.querySelector('[name="telefono"]')?.value || '',
-      material:    document.querySelector('[name="material"]')?.value || '',
-      cantidad:    document.querySelector('[name="cantidad"]')?.value || '',
-      urgencia:    document.querySelector('[name="urgencia"]')?.value || '',
-      mensaje:     document.querySelector('[name="mensaje"]').value,
-      archivo:     file ? file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)' : 'Sin archivo',
-      subject:     'Nuevo presupuesto FORGE3D — ' + document.querySelector('[name="name"]').value,
-    };
+    const formData = new FormData(e.target);
 
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
+        body: formData,
+        headers: { 'Accept': 'application/json' }
       });
-      const json = await res.json();
-      if(res.ok && json.success) {
+      if(res.ok) {
         document.getElementById('presupuesto-form').style.display = 'none';
         document.getElementById('success-msg').style.display = 'block';
       } else {
@@ -1409,8 +1862,8 @@ footer {
     <button onclick="openModal(); toggleFab()" style="background:var(--navy3); color:var(--light); border:1px solid rgba(230,80,64,.3); padding:10px 18px; font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.09em; cursor:pointer; white-space:nowrap; transition:background .2s;" onmouseover="this.style.background='var(--panel)'" onmouseout="this.style.background='var(--navy3)'">
       📋 Solicitar presupuesto
     </button>
-    <a href="mailto:info@forge3d.es" style="background:var(--navy3); color:var(--light); border:1px solid rgba(230,80,64,.3); padding:10px 18px; font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.09em; text-decoration:none; white-space:nowrap; transition:background .2s;" onmouseover="this.style.background='var(--panel)'" onmouseout="this.style.background='var(--navy3)'">
-      ✉️ info@forge3d.es
+    <a href="/cdn-cgi/l/email-protection#2c45424a436c4a435e4b491f4802495f" style="background:var(--navy3); color:var(--light); border:1px solid rgba(230,80,64,.3); padding:10px 18px; font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.09em; text-decoration:none; white-space:nowrap; transition:background .2s;" onmouseover="this.style.background='var(--panel)'" onmouseout="this.style.background='var(--navy3)'">
+      ✉️ <span class="__cf_email__" data-cfemail="2841464e47684e475a4f4d1b4c064d5b">[email&#160;protected]</span>
     </a>
   </div>
 
@@ -1420,20 +1873,14 @@ footer {
   </button>
 </div>
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
-  let fabOpen = false;
-  function toggleFab() {
-    fabOpen = !fabOpen;
-    const opts = document.getElementById('fab-options');
-    const btn  = document.getElementById('fab-btn');
-    opts.style.display = fabOpen ? 'flex' : 'none';
-    btn.textContent    = fabOpen ? '✕' : '✉';
-    btn.style.transform = fabOpen ? 'rotate(0deg)' : '';
-  }
-  // Hide FAB when modal is open
-  const origOpen  = window.openModal;
-  const origClose = window.closeModal;
-</script>
-
-</body>
-</html>
+function showMat(id, btn) {
+  document.querySelectorAll('.mat-detail').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.mat-tab').forEach(t => t.classList.remove('active'));
+  var el = document.getElementById('mat-' + id);
+  if (el) el.classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+</script><script>
+  let fabOpen = false
